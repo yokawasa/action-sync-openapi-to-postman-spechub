@@ -1,0 +1,9 @@
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Ignore tmp testing files
+t.sh
+/*/t.sh
+/t/*
+/*/t/*

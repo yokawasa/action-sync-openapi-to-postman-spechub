@@ -21,3 +21,12 @@ if [ $? -ne 0 ]; then
   echo "Failed as expected"
   exit 0
 fi
+
+# docker run --rm \
+#   -v "$(pwd):/tests" \
+#   "$IMAGE_NAME" \
+#   "PMAK-****" "1ccee852-27b6-4169-b5f1-12345" "tests/test-openapi.yaml" "yaml"
+# if [ $? -ne 0 ]; then
+#   echo "Failed as expected"
+#   exit 0
+# fi	
