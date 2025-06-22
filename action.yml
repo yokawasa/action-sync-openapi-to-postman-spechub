@@ -1,0 +1,31 @@
+name: 'Sync OpenAPI to Postman SpecHub'
+description: 'Synchronizes OpenAPI to Postman SpecHub'
+author: 'yokawasa'
+branding:
+  icon: 'check-circle'
+  color: 'black'
+inputs:
+  postman-api-key:
+    description: 'Postman API Key'
+    required: true
+    default: ''
+  postman-spec-id:
+    description: 'Postman Spec ID'
+    required: true
+    default: ''
+  openapi-file-path:
+    description: 'Path to the OpenAPI Spec file in the repository'
+    required: true
+    default: 'openapi.yaml'
+  openapi-format:
+    description: 'OpenAPI file format: either yaml or json'
+    default: "yaml"
+    required: true
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.postman-api-key }}
+    - ${{ inputs.postman-spec-id }}
+    - ${{ inputs.openapi-file-path }}
+    - ${{ inputs.openapi-format }}
