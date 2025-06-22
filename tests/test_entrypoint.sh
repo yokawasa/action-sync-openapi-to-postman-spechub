@@ -3,7 +3,8 @@
 # Test script for entrypoint.sh
 
 # Path to the script being tested
-SCRIPT_PATH="./entrypoint.sh"
+TEST_DIR="$(cd "$(dirname "$0")"; pwd)"
+SCRIPT_PATH="${TEST_DIR}/../entrypoint.sh"
 
 # Helper function to run a test case
 run_test() {
