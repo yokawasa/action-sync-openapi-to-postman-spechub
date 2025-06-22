@@ -1,0 +1,28 @@
+name: Test OpenAPI to Postman SpecHub Sync Action
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  test-entrypoint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      #- name: Install dependencies
+      #  run: sudo apt-get update && sudo apt-get install -y bash curl jq
+
+      # Run tests: test_entrypoint.sh
+      - name: Run test_entrypoint.sh
+        run: bash tests/test_entrypoint.sh
+
+      # Run tests: test_docker.sh
+      - name: Run test_docker.sh
+        run: bash tests/test_docker.sh
