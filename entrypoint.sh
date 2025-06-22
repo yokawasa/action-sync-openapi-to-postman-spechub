@@ -14,8 +14,9 @@ if [ -z "${POSTMAN_SPEC_ID}" ]; then
   >&2 echo "Set the POSTMAN_SPEC_ID input variable."
   exit 1
 fi
-if [ -z "${OPENAPI_FILE_PATH}" ]; then
-  >&2 echo "Set the OPENAPI_FILE_PATH input variable."
+# Checking if OPENAPI_FILE_PATH is NOT set or if the file does not exist
+if [ -z "${OPENAPI_FILE_PATH}" ] || [ ! -f "${OPENAPI_FILE_PATH}" ]; then
+  >&2 echo "Set the OPENAPI_FILE_PATH input variable to a valid file path."
   exit 1
 fi
 # Checking if OPENAPI_FORMAT is NOT set or if it is neither "json" or "yaml"
