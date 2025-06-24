@@ -27,14 +27,13 @@ fi
 
 main() {
   local openapi_content=$(cat "${OPENAPI_FILE_PATH}")
-  echo $OPENAPI_CONTENT
 
   curl --location --globoff \
   --request PATCH "https://api.getpostman.com/specs/${POSTMAN_SPEC_ID}/files/index.${OPENAPI_FORMAT}" \
   --header "Content-Type: application/json" \
   --header "X-API-Key: ${POSTMAN_API_KEY}" \
   --data "{
-    \"content\": \"${OPENAPI_CONTENT}\"
+    \"content\": \"${openapi_content}\"
   }"
 }
 
