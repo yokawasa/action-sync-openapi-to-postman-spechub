@@ -25,7 +25,7 @@ name: Sync OpenAPI to Postman SpecHub
 on:
   push:
     branches:
-      - main
+      - main # trigger push to main branch 
 
 jobs:
   sync-openapi:
@@ -38,9 +38,54 @@ jobs:
         uses: yokawasa/action-sync-openapi-to-postman-spechub@v0.1.0
         with:
           postman-api-key: ${{ secrets.POSTMAN_API_KEY }}
-          postman-spec-id: "your-postman-spec-id"
-          openapi-file-path: "openapi.yaml"
+          postman-spec-id: "<your-postman-spec-id>"
+          openapi-file-path: "<openapi-file-path>"
           openapi-format: "yaml"
+```
+
+The following example demonstrates how to check for changes in the OpenAPI file and only proceed with the workflow if modifications are detected:
+
+```yaml
+name: Sync OpenAPI to Postman SpecHub
+
+on:
+  push:
+    branches:
+      - main # trigger push to main branch 
+
+env:
+  OPENAPI_FILE: oas/openapi.yaml # Path to your OpenAPI file
+  POSTMAN_SPEC_ID: "12345678-27b6-4169-b5f1-af123b75be75"  # Your Postman Spec ID
+
+jobs:
+  sync-openapi:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v3
+
+      - name: Check for changes in openapi.yaml
+        id: detect_change
+        run: |
+          git fetch origin main
+          # Check if OpenAPI has changed in the last commit (diff HEAD~1 and HEAD)
+          CHANGED=$(git diff --name-only HEAD~1 HEAD | grep "$OPENAPI_FILE" || true)
+          echo "changed_files=$CHANGED" >> $GITHUB_OUTPUT
+
+      - name: Exit if no changes detected
+        if: steps.detect_change.outputs.changed_files == ''
+        run: |
+          echo "No changes detected in $OPENAPI_FILE. Exiting workflow."
+          exit 0
+
+      - name: Sync OpenAPI to Postman SpecHub
+        uses: yokawasa/action-sync-openapi-to-postman-spechub@v0.1.0
+        with:
+          postman-api-key: ${{ secrets.POSTMAN_API_KEY }}
+          postman-spec-id: ${{ env.POSTMAN_SPEC_ID }}
+          openapi-file-path: ${{ env.OPENAPI_FILE }}
+          openapi-format: "yaml"
+
 ```
 
 ### Notes
